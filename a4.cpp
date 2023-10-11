@@ -8,16 +8,7 @@
 #include "cairo-pdf.h"
 #include "cairo.h"
 
-a4::a4() {
-	{std::ofstream (filename_.c_str());}// Create empty file for Cairo
-	surface_ = cairo_pdf_surface_create(filename_.c_str(), width_, height_);
-	context_ = cairo_create(surface_);
-}
-
-a4::~a4() {// Cleanup
-	cairo_destroy(context_);
-	cairo_surface_flush(surface_);
-	cairo_surface_destroy(surface_);
+a4::a4() : printerSheet(595, 842) {
 }
 
 void a4::set_font(const std::string& font_name, int font_size, bool bold) {
@@ -60,7 +51,3 @@ void a4::advance(int y) {
 	cairo_move_to(context_, left_margin_, current_height_pos_);
 }
 
-const char* a4::get_page_handle() const {
-	cairo_show_page(context_);
-	return filename_.c_str();
-}
